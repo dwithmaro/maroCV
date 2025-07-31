@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marwan Nasser - 3D Generalist & Artist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-olive: #383B2A;
+            --light-beige: #E4E1DC;
+            --muted-green: #6E715C;
+            --taupe: #B8AC9E;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-beige);
+            color: var(--dark-olive);
+            cursor: none; /* Hide default cursor */
+        }
+
+        /* Custom Cursor Styles */
+        .cursor {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--dark-olive);
+        }
+        .cursor-circle {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--dark-olive);
+            transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+        }
+        body:hover .cursor-circle {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .cursor-circle.hidden {
+            transform: scale(0);
+            opacity: 0;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, var(--muted-green), var(--dark-olive));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-animation 8s ease infinite;
+        }
+
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .skill-badge {
+            display: inline-block;
+            background-color: var(--taupe);
+            color: var(--dark-olive);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin: 0.25rem;
+            transition: all 0.2s ease-in-out;
+        }
+        .skill-badge:hover {
+            transform: translateY(-2px) scale(1.05);
+            background-color: var(--muted-green);
+            color: var(--light-beige);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0,0,0,0.08);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+        .card:hover {
+            border-color: var(--muted-green);
+            transform: translateZ(20px);
+        }
+
+        .icon-link {
+            color: #6E715C;
+            transition: color 0.2s ease-in-out;
+        }
+        .icon-link:hover {
+            color: var(--dark-olive);
+        }
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.6s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Button Interaction Styles */
+        .interactive-button {
+            position: relative;
+            overflow: hidden; /* Contain particles */
+        }
+        
+        .particle {
+            position: absolute;
+            background-color: var(--taupe);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: pop 0.6s forwards;
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(1) translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0) translate(var(--x), var(--y));
+                opacity: 0;
+            }
+        }
+        
+        .shake {
+            animation: shake-animation 0.4s;
+        }
+
+        @keyframes shake-animation {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Custom Cursor Elements -->
+    <div class="cursor cursor-dot"></div>
+    <div class="cursor cursor-circle hidden"></div>
+
+    <!-- Main Container -->
+    <div class="container mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+
+        <!-- Header Section -->
+        <header class="text-center mb-16 reveal">
+            <h1 class="text-4xl sm:text-6xl font-black uppercase tracking-tighter">Marwan Nasser Mohamed</h1>
+            <h2 class="text-2xl sm:text-3xl font-bold mt-2 gradient-text">3D Generalist / Artist</h2>
+            
+            <div class="flex flex-wrap justify-center items-center gap-x-4 sm:gap-x-6 gap-y-2 mt-6" style="color: var(--muted-green);">
+                <span class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /></svg>
+                    Giza, Egypt
+                </span>
+                <a href="tel:+201004084788" class="flex items-center icon-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" /></svg>
+                    +20 100 408 4788
+                </a>
+                <a href="mailto:3dwithmaro@gmail.com" class="flex items-center icon-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" /><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" /></svg>
+                    3dwithmaro@gmail.com
+                </a>
+            </div>
+
+            <div class="mt-8">
+                <a href="https://www.instagram.com/3dwith_maro/" target="_blank" class="interactive-button inline-block text-white font-bold uppercase tracking-wider py-3 px-8 rounded-lg shadow-lg transition-transform transform hover:scale-105" style="background-color: var(--muted-green); color: var(--light-beige);">
+                    View Portfolio (@3dwith_maro)
+                    <span class="ml-2 text-sm opacity-80">(+20K)</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- About Me Section -->
+        <section id="about" class="mb-16 reveal">
+            <h3 class="text-2xl font-bold border-b-2 pb-2 mb-6 inline-block" style="border-color: var(--taupe);">ABOUT ME</h3>
+            <p class="text-lg leading-relaxed" style="color: var(--dark-olive);">
+                I bring ideas to life through stunning 3D visuals and animation — fast, clean, and with a style of my own. I’m a self-taught 3D artist who thrives under pressure, executes efficiently, and delivers eye-catching results that clients actually remember.
+            </p>
+        </section>
+
+        <!-- Skills & Tools Section -->
+        <section id="skills" class="mb-16 reveal">
+            <h3 class="text-2xl font-bold border-b-2 pb-2 mb-6 inline-block" style="border-color: var(--taupe);">SKILLS & TOOLS</h3>
+            <div class="space-y-4">
+                <div>
+                    <h4 class="font-semibold text-lg mb-2" style="color: var(--muted-green);">Expert</h4>
+                    <span class="skill-badge">Blender</span>
+                    <span class="skill-badge">After Effects</span>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-lg mb-2" style="color: var(--muted-green);">Good With</h4>
+                    <span class="skill-badge">Cinema 4D</span>
+                    <span class="skill-badge">Maya</span>
+                    <span class="skill-badge">Nuke</span>
+                    <span class="skill-badge">Lightroom</span>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-lg mb-2" style="color: var(--muted-green);">Core Strengths</h4>
+                    <span class="skill-badge">Animation & Creative Execution</span>
+                    <span class="skill-badge">Fast Delivery</span>
+                    <span class="skill-badge">Problem-Solving</span>
+                    <span class="skill-badge">Works Great Under Pressure</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="mb-16 reveal">
+            <h3 class="text-2xl font-bold border-b-2 pb-2 mb-6 inline-block" style="border-color: var(--taupe);">EXPERIENCE</h3>
+            <div class="space-y-8">
+                <div class="card p-6 rounded-lg tilt-card">
+                    <h4 class="text-xl font-bold">Birdmilk Creative Agency</h4>
+                    <p class="text-md font-medium mb-2" style="color: var(--muted-green);">3D Artist & Animator (2024 – Present)</p>
+                    <p class="mb-4">Created 3D visuals and animation for major brands including:</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><span class="font-semibold">NIVEA Egypt:</span> Visuals for high-profile campaigns (Soft, Men, Pearl & Beauty lines).</li>
+                        <li><span class="font-semibold">Kellogg’s:</span> Full 3D animation for a nationally aired TV ad.</li>
+                        <li><span class="font-semibold">Other Clients:</span> Wafeer, Wady Food, Likemoon.</li>
+                    </ul>
+                </div>
+                <div class="card p-6 rounded-lg tilt-card">
+                    <h4 class="text-xl font-bold">Freelance</h4>
+                    <p class="text-md font-medium mb-2" style="color: var(--muted-green);">3D Product Visualizer & Animator (Ongoing)</p>
+                     <ul class="list-disc list-inside space-y-2">
+                        <li>Worked with <span class="font-semibold">T3 Micro</span> (300K+ IG haircare brand) on product animations.</li>
+                        <li>Delivered visuals for clients across different industries, combining sleek 3D design with motion.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Project Highlights -->
+        <section id="highlights" class="mb-16 reveal">
+            <h3 class="text-2xl font-bold border-b-2 pb-2 mb-6 inline-block" style="border-color: var(--taupe);">PROJECT HIGHLIGHTS</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                 <div class="card p-6 rounded-lg tilt-card">
+                    <h4 class="text-xl font-bold mb-2">⭐ Kellogg’s Noodles TV Ad</h4>
+                    <p>Full CG ad broadcasted on TV, showcasing end-to-end animation and rendering skills.</p>
+                </div>
+                 <div class="card p-6 rounded-lg tilt-card">
+                    <h4 class="text-xl font-bold mb-2">⭐ NIVEA Soft: Mother’s Day</h4>
+                    <p>Emotional, polished visual execution delivered under a tight deadline.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Philosophy Section -->
+        <section id="philosophy" class="text-center p-8 rounded-lg mb-16 reveal" style="background-color: #d8d5d0;">
+            <h3 class="text-xl font-bold mb-2" style="color: var(--dark-olive);">EDUCATION & TRAINING</h3>
+            <p class="text-2xl font-light italic" style="color: var(--muted-green);">"Self-taught. No courses, no mentors — just consistent self-discipline, practice, and faith."</p>
+        </section>
+
+        <!-- What I'm Looking For -->
+        <section id="looking-for" class="mb-16 reveal">
+             <div class="card p-8 rounded-lg text-center">
+                <h3 class="text-2xl font-bold mb-4">WHAT I'M LOOKING FOR</h3>
+                <p class="text-lg max-w-2xl mx-auto mb-4">
+                    A long-term opportunity (remote or in-studio) where I can keep creating sharp, high-impact 3D work — especially in product animation, commercials, or high-visual brand content.
+                </p>
+                <p class="font-semibold" style="color: var(--muted-green);">Freelance gigs welcome too.</p>
+             </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center reveal" style="color: var(--muted-green);">
+            <p class="font-bold text-lg mb-2" style="color: var(--dark-olive);">What sets me apart?</p>
+            <p class="mb-6">I’m fast, precise, and have the kind of visual taste that stands out. I work well under pressure, I stay humble, and I always deliver — whether it’s for a global brand or a startup with a vision.</p>
+            <p>© 2024 Marwan Nasser Mohamed. All Rights Reserved.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // --- SCRIPT FOR ALL INTERACTIVITY ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 1. Scroll Reveal Animations
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            revealElements.forEach(el => observer.observe(el));
+
+            // 2. Subtle 3D Tilt Effect on Cards
+            const tiltCards = document.querySelectorAll('.tilt-card');
+            tiltCards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const { left, top, width, height } = card.getBoundingClientRect();
+                    const x = e.clientX - left - width / 2;
+                    const y = e.clientY - top - height / 2;
+                    
+                    const yRotation = (x / width) * 10; // Reduced from 15 to 10
+                    const xRotation = (y / height) * -10; // Reduced from -15 to -10
+
+                    card.style.transform = `perspective(1000px) scale(1.02) rotateX(${xRotation}deg) rotateY(${yRotation}deg)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) scale(1) rotateX(0) rotateY(0)';
+                });
+            });
+            
+            // 3. Custom Cursor
+            const cursorDot = document.querySelector('.cursor-dot');
+            const cursorCircle = document.querySelector('.cursor-circle');
+            let dotX = 0, dotY = 0, circleX = 0, circleY = 0;
+
+            window.addEventListener('mousemove', e => {
+                dotX = e.clientX;
+                dotY = e.clientY;
+                cursorDot.style.transform = `translate(${dotX - 4}px, ${dotY - 4}px)`;
+                cursorCircle.classList.remove('hidden');
+            });
+            
+            const animateCircle = () => {
+                circleX += (dotX - circleX) * 0.15;
+                circleY += (dotY - circleY) * 0.15;
+                cursorCircle.style.transform = `translate(${circleX - 20}px, ${circleY - 20}px)`;
+                requestAnimationFrame(animateCircle);
+            };
+            animateCircle();
+
+            // 4. Button Particle Effect
+            const portfolioButton = document.querySelector('.interactive-button');
+            portfolioButton.addEventListener('click', e => {
+                for (let i = 0; i < 20; i++) {
+                    createParticle(e.clientX, e.clientY);
+                }
+            });
+
+            function createParticle(x, y) {
+                const particle = document.createElement('span');
+                particle.classList.add('particle');
+                document.body.appendChild(particle);
+
+                const size = Math.floor(Math.random() * 10 + 5);
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+
+                const rect = portfolioButton.getBoundingClientRect();
+                const startX = rect.left + rect.width / 2;
+                const startY = rect.top + rect.height / 2;
+                
+                particle.style.left = `${startX}px`;
+                particle.style.top = `${startY}px`;
+
+                const destX = (Math.random() - 0.5) * 300;
+                const destY = (Math.random() - 0.5) * 300;
+                
+                particle.style.setProperty('--x', `${destX}px`);
+                particle.style.setProperty('--y', `${destY}px`);
+
+                particle.addEventListener('animationend', () => {
+                    particle.remove();
+                });
+            }
+            
+            // 5. Button Shake Effect
+            portfolioButton.addEventListener('mouseenter', () => {
+                portfolioButton.classList.add('shake');
+                portfolioButton.addEventListener('animationend', () => {
+                    portfolioButton.classList.remove('shake');
+                }, { once: true });
+            });
+        });
+
+    </script>
+
+</body>
+</html>
